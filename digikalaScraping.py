@@ -3,8 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 
-browser = webdriver.Chrome()  # start a web browser
-browser.get("https://www.airbnb.com/experiences/272085")  # navigate to URL
+browser = webdriver.Firefox()  # start a web browser
+browser.get("https://www.digikala.com/search/category-book/")  # navigate to URL
 # wait for page to load
 # by waiting for <h1> element to appear on the page
 title = (
