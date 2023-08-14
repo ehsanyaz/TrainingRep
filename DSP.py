@@ -16,5 +16,6 @@ async def func():
         return url, await page.content()
 url , html = asyncio.run(func())
 soup = BeautifulSoup(html,"html.parser")
-content = soup.find("h3", attrs = {"class" : "ellipsis-2 text-body2-strong color-700 styles_VerticalProductCard__productTitle__6zjjN"})
-print(content.text)
+names = soup.find_all("h3", attrs = {"class" : "ellipsis-2 text-body2-strong color-700 styles_VerticalProductCard__productTitle__6zjjN"})
+for name in names:
+    print(name.text)
