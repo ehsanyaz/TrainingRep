@@ -1,4 +1,4 @@
-# DigiKala Scraping Using PlayWright Asynco
+# DigiKala Scraping Using PlayWright Synco
 
 from bs4 import BeautifulSoup
 import asyncio
