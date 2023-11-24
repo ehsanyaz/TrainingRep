@@ -72,7 +72,7 @@ def getProductUrls(i):
         if a_tag:
             href = a_tag.get('href')
             href = 'https://digikala.com' + href + '#gallery'
-            print('Product Processing')
+            #print('Product Processing')
             #print('product ID :' + href.split('/')[4])
             image_export(href)
             # products.append('https://digikala.com'+href+'#gallery')
@@ -86,11 +86,11 @@ for i in range(1, 5):
     print('+++++++++++ page number:' + str(i) + '+++++++++++')
     threads.append(threading.Thread(target=getProductUrls , args= (i,)))
 for t in threads:
-    print("Thread Start")
+   #print("Thread Start")
     t.start()
 for t in threads:
     t.join()
-    print("Thread End")
+    #print("Thread End")
 
 
     #getProductUrls(i)
