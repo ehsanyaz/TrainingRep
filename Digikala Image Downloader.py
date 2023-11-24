@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import asyncio
 from playwright.async_api import async_playwright
 import requests
+import random
 
 # from playwright.sync_api import sync_playwright
 # import time
@@ -11,8 +12,7 @@ import requests
 # import os
 # import concurrent
 
-save_directory = 'images'
-counter = 0
+
 
 # Create the directory if it doesn't exist
 # os.makedirs(save_directory, exist_ok=True)
@@ -28,6 +28,8 @@ counter = 0
 #         return content
 
 
+counter = 0
+
 async def func(url, selector):
     async with async_playwright() as pw:
         browser = await pw.chromium.launch()
@@ -36,12 +38,12 @@ async def func(url, selector):
         await page.wait_for_selector(selector)
         return await page.content()
 
-
 def save_image(div_gallery):
+    global counter
     response = requests.get(div_gallery['src'], headers={
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'})
     if response.status_code == 200:
-        file_path = str(counter) + '.jpg'
+        file_path = "imgs//" + str(counter) + '.jpg'
         counter = counter + 1
         with open(file_path, 'wb') as file:
             file.write(response.content)
