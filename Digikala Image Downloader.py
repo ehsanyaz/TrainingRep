@@ -1,10 +1,10 @@
 # Digikala Web Scarping Using PlayWright Asynco
+import threading
 
 from bs4 import BeautifulSoup
 import asyncio
 from playwright.async_api import async_playwright
 import requests
-import random
 
 # from playwright.sync_api import sync_playwright
 # import time
@@ -43,8 +43,9 @@ def save_image(div_gallery):
     response = requests.get(div_gallery['src'], headers={
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'})
     if response.status_code == 200:
-        file_path = "imgs//" + str(counter) + '.jpg'
+        x = counter
         counter = counter + 1
+        file_path = "imgs//" + str(x) + '.jpg'
         with open(file_path, 'wb') as file:
             file.write(response.content)
         print(f'The image has been saved to {file_path}')
@@ -55,7 +56,7 @@ def save_image(div_gallery):
 def image_export(url):
     result_img = asyncio.run(func(url, 'h3'))
     soup_gallery = BeautifulSoup(result_img, "html.parser")
-    divs_gallery = soup_gallery.find_all('img', src=lambda value: value and value.startswith(
+    divs_gallery = soup_gallery.find_all('img', src=lambda value:value.startswith(
         'https://dkstatics-public.digikala.com/digikala-products/'))
     for div_gallery in divs_gallery:
         save_image(div_gallery)
@@ -71,19 +72,28 @@ def getProductUrls(i):
         if a_tag:
             href = a_tag.get('href')
             href = 'https://digikala.com' + href + '#gallery'
-            print('*********************')
-            print('product ID :' + href.split('/')[4])
+            print('Product Processing')
+            #print('product ID :' + href.split('/')[4])
             image_export(href)
             # products.append('https://digikala.com'+href+'#gallery')
     # return products
 
 
-if __name__ == "__main__":
-    products = []
 
-    for i in range(1, 101):
-        print('+++++++++++ page number:' + str(i) + '+++++++++++')
-        products = getProductUrls(i)
+threads = []
+
+for i in range(1, 5):
+    print('+++++++++++ page number:' + str(i) + '+++++++++++')
+    threads.append(threading.Thread(target=getProductUrls , args= (i,)))
+for t in threads:
+    print("Thread Start")
+    t.start()
+for t in threads:
+    t.join()
+    print("Thread End")
+
+
+    #getProductUrls(i)
 
     # with concurrent.futures.ThreadPoolExecutor(10) as executor:
     #     results = [executor.submit(getProductUrls, i) for i in range(1,11)]
